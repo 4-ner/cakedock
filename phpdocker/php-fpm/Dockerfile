@@ -1,12 +1,9 @@
-FROM phpdockerio/php72-fpm:latest
-WORKDIR "/application"
+FROM php:fpm-alpine
 
-# Install selected extensions and other stuff
-RUN apt-get update \
-    && apt-get -y --no-install-recommends install  php7.2-mysql php-redis php7.2-intl  php7.2-mbstring \
-    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+WORKDIR "/var/www/app"
 
-# Install git
-RUN apt-get update \
-    && apt-get -y install git \
-    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+RUN apk add --no-cache --update icu-libs icu icu-dev && rm /var/cache/apk/*
+
+RUN docker-php-ext-install intl pdo pdo_mysql mbstring
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
