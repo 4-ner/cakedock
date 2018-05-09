@@ -17,6 +17,11 @@ services:
       context: ./cakedock/workspace
     volumes:
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${MARIADB_USER}
+      - DB_PASSWORD=${MARIADB_PASSWORD}
+      - DB_DATABASE=${MARIADB_DATABASE}
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
     ports:
@@ -69,11 +74,15 @@ services:
     volumes:
       - ./cakedock/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
       - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${MARIADB_USER}
+      - DB_PASSWORD=${MARIADB_PASSWORD}
+      - DB_DATABASE=${MARIADB_DATABASE}
+      - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
     expose:
       - "9000"
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
-    environment:
-      - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
     networks:
       - backend

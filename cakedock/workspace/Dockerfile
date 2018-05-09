@@ -18,7 +18,7 @@ RUN groupadd -g ${PGID} cakedock && \
     usermod -p "*" cakedock
 
 RUN apk add --no-cache --update icu-libs icu icu-dev && rm /var/cache/apk/*
-RUN docker-php-ext-install intl
+RUN docker-php-ext-install intl pdo pdo_mysql mbstring
 
 WORKDIR "/var/www"
 
